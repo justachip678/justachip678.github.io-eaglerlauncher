@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)https://leocraft.neocities.org/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Bionic's launcher</title>
+    <style>
+        /* Modern, dark aesthetic */
+        body {
+            background-color: #121212;
+            color: white;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Prevents scrollbars from the snow */
+        }
+
+        /* Snow Canvas Layout */
+        #snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Puts snow behind everything */
+            pointer-events: none;
+        }
+
+        .launcher-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: rgba(30, 30, 30, 0.85); /* Transparent background to see snow */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #444;
+            backdrop-filter: blur(5px); /* Frosty glass effect */
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        /* Elegant Button Styling */
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #ffffff;
+            background: linear-gradient(145deg, #2a2a2a, #232323);
+            border: 1px solid #444;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            min-width: 250px;
+        }
+
+        /* Hover and Click effects */
+        button:hover {
+            background: #3d3d3d;
+            border-color: #007bff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="snow" width="1358" height="602"></canvas>
+
+    <h1>Clients</h1>
+
+    <div class="launcher-container">
+        <button onclick="openGame(&#39;https://astraclient.com/play/wasm/18/&#39;)">Launch Astra</button>
+
+        <button onclick="openGame(&#39;https://test.tuffis.online/files/1_1UT13/WASM/&#39;)">Launch Tuff</button>
+
+        <button onclick="openGame(&#39;https://modernclient.online/wasm/&#39;)">Launch Modernclient</button>
+        
+        <button onclick="openGame(&#39;https://view.pagesection.com/e38-LLALLALALAlAlAALLALlalaLaL/EB.Client.V1.0.0R2.WASM.html&#39;)">Launch Ebclient</button>
+        
+        <button onclick="openGame(&#39;https://resent.dragonfire.world/ &#39;)">Launch Resentclient</button>
+        
+        <button onclick="openGame(&#39;https://pixelclient.xyz/ &#39;)">Launch pixelClient launcher</button>
+    </div>
+
+    <script>
+        // --- Snow Animation Code ---
+        const canvas = document.getElementById('snow');
+        const ctx = canvas.getContext('2d');
+        let width, height, snowflakes = [];
+
+        function initSnow() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            snowflakes = [];
+            for (let i = 0; i < 150; i++) {
+                snowflakes.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    r: Math.random() * 3 + 1, // Radius
+                    d: Math.random() * 1,     // Density/Speed
+                    v: Math.random() * 0.5 - 0.25 // Horizontal drift
+                });
+            }
+        }
+
+        function drawSnow() {
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            for (let i = 0; i < snowflakes.length; i++) {
+                let s = snowflakes[i];
+                ctx.moveTo(s.x, s.y);
+                ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2, true);
+            }
+            ctx.fill();
+            updateSnow();
+        }
+
+        function updateSnow() {
+            for (let i = 0; i < snowflakes.length; i++) {
+                let s = snowflakes[i];
+                s.y += Math.pow(s.d, 2) + 1;
+                s.x += s.v;
+
+                if (s.y > height) {
+                    snowflakes[i] = { x: Math.random() * width, y: -10, r: s.r, d: s.d, v: s.v };
+                }
+            }
+        }
+
+        function animate() {
+            drawSnow();
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initSnow);
+        initSnow();
+        animate();
+
+        // --- Original Game Launch Function ---
+        function openGame(url) {
+            var win = window.open();
+            win.document.body.style.margin = "0";
+            win.document.body.style.height = "100vh";
+            win.document.body.style.backgroundColor = "black";
+            
+            var iframe = win.document.createElement('iframe');
+            iframe.style.width = "100vw";
+            iframe.style.height = "100vh";
+            iframe.style.border = "none";
+            iframe.src = url;
+            
+            win.document.body.appendChild(iframe);
+        }
+    </script>
+
+
+</body></html>
